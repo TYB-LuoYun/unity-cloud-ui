@@ -64,7 +64,7 @@ import { system, monitor, permission, frame, tabs } from "@/router/enums";
 
 export default defineFakeRoute([
   {
-    url: "/get-async-routes",
+    url: "/auth/menu-resource",
     method: "get",
     response: () => {
       return {

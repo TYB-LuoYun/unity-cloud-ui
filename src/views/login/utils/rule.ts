@@ -19,7 +19,8 @@ const loginRules = reactive<FormRules>({
         if (value === "") {
           callback(new Error(transformI18n($t("login.purePassWordReg"))));
         } else if (!REGEXP_PWD.test(value)) {
-          callback(new Error(transformI18n($t("login.purePassWordRuleReg"))));
+           callback();
+          // callback(new Error(transformI18n($t("login.purePassWordRuleReg"))));
         } else {
           callback();
         }

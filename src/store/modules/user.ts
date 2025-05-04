@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { message } from "@/utils/message";
 import {
   type userType,
   store,
@@ -11,6 +12,8 @@ import {
   type UserResult,
   type RefreshTokenResult,
   getLogin,
+  getToken,
+  getUserInfo,
   refreshTokenApi
 } from "@/api/user";
 import { useMultiTagsStoreHook } from "./multiTags";
@@ -77,17 +80,53 @@ export const useUserStore = defineStore("pure-user", {
     },
     /** 登入 */
     async loginByUsername(data) {
-      return new Promise<UserResult>((resolve, reject) => {
-        getLogin(data)
+      return new Promise<UserResult>((resolve, reject) => {  
+        getToken(data)
           .then(data => {
-            if (data?.success) setToken(data.data);
-            resolve(data);
+            if (data?.success) {
+              console.log(data)
+              setToken({
+                accessToken : data.data.token,
+                refreshToken : data.data.refreshToken,
+                expires : data.data.expiration
+              });
+              getUserInfo().then(data2 => {
+                console.log(data2)
+                data2.data.accessToken = data.data.token;
+                /** 用于调用刷新`accessToken`的接口时所需的`token` */
+                data2.data.refreshToken = data.data.refreshToken;
+                /** `accessToken`的过期时间（格式'xxxx/xx/xx xx:xx:xx'） */
+                data2.data.expires = data.data.expiration;
+                console.log("token处理结果")
+                console.log(data2.data)
+                setToken(data2.data);
+                resolve(data2);
+              }).catch(error2 => {
+                reject(error2);
+              })
+            } else { 
+               message(data.msg, { type: "error" });
+            } 
+            console.log("需要处理的token信息")
+            console.log(data.data)
           })
           .catch(error => {
             reject(error);
           });
+
+        
+        // getLogin(data)
+        //   .then(data => {
+        //     if (data?.success) setToken(data.data);
+        //     // resolve(data);
+        //     console.log("需要处理的data信息")
+        //     console.log(data.data)
+        //   })
+        //   .catch(error => {
+        //     reject(error);
+        //   });
       });
-    },
+    }, 
     /** 前端登出（不调用接口） */
     logOut() {
       this.username = "";

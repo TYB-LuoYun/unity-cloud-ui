@@ -14,6 +14,8 @@ import NProgress from "../progress";
 import { getToken, formatToken } from "@/utils/auth";
 import { useUserStoreHook } from "@/store/modules/user";
 
+// Axios.defaults.baseURL = '/api'
+
 // 相关配置请参考：www.axios-js.com/zh-cn/docs/#axios-request-config-1
 const defaultConfig: AxiosRequestConfig = {
   // 请求超时时间
@@ -44,6 +46,8 @@ class PureHttp {
   /** 初始化配置对象 */
   private static initConfig: PureHttpRequestConfig = {};
 
+
+ 
   /** 保存当前`Axios`实例对象 */
   private static axiosInstance: AxiosInstance = Axios.create(defaultConfig);
 
@@ -52,6 +56,7 @@ class PureHttp {
     return new Promise(resolve => {
       PureHttp.requests.push((token: string) => {
         config.headers["Authorization"] = formatToken(token);
+         config.headers["Access-Token"] =  token;
         resolve(config);
       });
     });
@@ -90,6 +95,7 @@ class PureHttp {
                       .then(res => {
                         const token = res.data.accessToken;
                         config.headers["Authorization"] = formatToken(token);
+                        config.headers["Access-Token"] =  token;
                         PureHttp.requests.forEach(cb => cb(token));
                         PureHttp.requests = [];
                       })
@@ -102,6 +108,7 @@ class PureHttp {
                   config.headers["Authorization"] = formatToken(
                     data.accessToken
                   );
+                  config.headers["Access-Token"] =  data.accessToken;
                   resolve(config);
                 }
               } else {

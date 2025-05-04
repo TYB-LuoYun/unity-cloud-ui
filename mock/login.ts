@@ -38,5 +38,46 @@ export default defineFakeRoute([
         };
       }
     }
+  },
+  {
+    url: "/auth/token",
+    method: "post",
+    response: ({ body }) => { 
+       console.log(body)
+        return {
+          success: true,
+          data: {
+            identityId: "1428975711003615234",
+            token: "eyJhbGciOiJIUzI1NiJ9.eyJhY2NvdW50SWQiOiIxNDI4OTc1NzExMDAzNjE1MjMzIiwiaWRlbnRpdHlUeXBlIjoiMTAiLCJkZXB0SWQiOiIxNDI4OTc1NzEwNzgxMzE3MTIxIiwidGVuYW50Q29kZSI6IkFPTElOIiwiZGF0YVNjb3BlIjoiMSIsInVzZXJJZCI6IjE0Mjg5NzU3MTEwMDM2MTUyMzQiLCJkZXB0Q29kZSI6IkEwMDEiLCJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNzQ2MzM4Mzg0LCJuYmYiOjE3NDYzMzgzODQsImV4cCI6MTc0NjM4MTU4NH0.34zRWrVDhpXsL0vF0ds94v_UQ0G07gbn-GZ0pRniLz8", 
+            refreshToken: "eyJhbGciOiJIUzI1NiJ9.eyJ1c2V",
+            expire: 43200,
+            expiration:"2030/10/30 00:00:00"
+          }
+        }; 
+      }
   }
+  ,
+  {
+    url: "/auth/user-info",
+    method: "post",
+    response: ({ body }) => { 
+      console.log(body)
+        return {
+          success: true,
+          data: { 
+              avatar: "https://avatars.githubusercontent.com/u/52823142",
+              /** 用户名 */
+              username: "common",
+              /** 昵称 */
+              nickname: "common",
+              /** 当前登录用户的角色 */
+              roles:["common"],
+              roleIds: ["common"],
+              roleListIds: ["common"]
+              
+          }
+        }; 
+      }
+  }
+  
 ]);
