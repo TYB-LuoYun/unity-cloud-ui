@@ -85,9 +85,12 @@ function isOneOfArray(a: Array<string>, b: Array<string>) {
 function filterNoPermissionTree(data: RouteComponent[]) {
   const currentRoles =
     storageLocal().getItem<DataInfo<number>>(userKey)?.roles ?? [];
-  const newTree = cloneDeep(data).filter((v: any) =>
-    isOneOfArray(v.meta?.roles, currentRoles)
-  );
+  console.log("当前角色", currentRoles)
+  // const newTree = cloneDeep(data).filter((v: any) =>
+  //   isOneOfArray(v.meta?.roles, currentRoles)
+  // );
+  console.log("修改了前端无需按照权限过滤路由，改为后端判断返回")
+  const newTree = cloneDeep(data)
   newTree.forEach(
     (v: any) => v.children && (v.children = filterNoPermissionTree(v.children))
   );
@@ -150,10 +153,10 @@ function addPathMatch() {
 }
 
 /** 处理动态路由（后端返回的路由） */
-function handleAsyncRoutes(routes) {
+function handleAsyncRoutes(routeList) {
   console.log("路由待处理");
-  let routeList = [];
   if (routeList.length === 0) {
+    console.log("空路由")
     usePermissionStoreHook().handleWholeMenus(routeList);
   } else {
     formatFlatteningRoutes(addAsyncRoutes(routeList)).map(
@@ -180,6 +183,7 @@ function handleAsyncRoutes(routes) {
         }
       }
     );
+    console.log("异步获取的路由:", routeList)
     usePermissionStoreHook().handleWholeMenus(routeList);
   }
   if (!useMultiTagsStoreHook().getMultiTagsCache) {
@@ -207,8 +211,8 @@ function initRouter() {
     } else {
       return new Promise(resolve => {
         getAsyncRoutes().then(({ data }) => {
-          handleAsyncRoutes(cloneDeep(data));
-          storageLocal().setItem(key, data);
+          handleAsyncRoutes(cloneDeep(data.routerVos));
+          storageLocal().setItem(key, data.routerVos);
           resolve(router);
         });
       });
@@ -216,7 +220,7 @@ function initRouter() {
   } else {
     return new Promise(resolve => {
       getAsyncRoutes().then(({ data }) => {
-        handleAsyncRoutes(cloneDeep(data));
+        handleAsyncRoutes(cloneDeep(data.routerVos));
         resolve(router);
       });
     });

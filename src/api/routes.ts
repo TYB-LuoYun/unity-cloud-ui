@@ -1,8 +1,11 @@
 import { http } from "@/utils/http";
-
+import { baseUrlApi } from "./utils";
 type Result = {
   success: boolean;
-  data: Array<any>;
+  data: {
+    routerVos: Array<any>,
+    btnAuths: Array<any>
+  };
 };
 
 export const getAsyncRoutes = () => {
