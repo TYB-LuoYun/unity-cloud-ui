@@ -73,36 +73,7 @@ export default defineFakeRoute([
         success: true,
         data: {
           routerVos: [
-            {
-              "path": "/monitor",
-              "name": "系统监控",
-              "component": "Layout",
-              "meta": {
-                "title": "系统监控",
-                "icon": "example",
-                "breadcrumb": true,
-                "noCache": false
-              },
-              "hidden": false,
-              "alwaysShow": true,
-              "sortValue": 50,
-              "children": [
-                {
-                  "path": "http://180.163.77.39:3000/",
-                  "name": "Grafana入口",
-                  "component": "grafana",
-                  "meta": {
-                    "title": "Grafana入口",
-                    "icon": null,
-                    "breadcrumb": true,
-                    "noCache": false
-                  },
-                  "hidden": false,
-                  "alwaysShow": false,
-                  "sortValue": 10
-                }
-              ]
-            }
+            permissionRouter
           ]
         }
       };
