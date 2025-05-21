@@ -14,7 +14,7 @@ function tabClick({ index }) {
 </script>
 
 <template>
-  <el-card shadow="never" :body-style="{ height: 'calc(100vh - 260px)' }">
+  <!-- <el-card shadow="never" :body-style="{ height: 'calc(100vh - 260px)' }">
     <template #header>
       <div class="card-header">
         <span class="font-medium">
@@ -55,7 +55,7 @@ function tabClick({ index }) {
         </el-tab-pane>
       </template>
     </el-tabs>
-  </el-card>
+  </el-card> -->
 </template>
 
 <style scoped>
